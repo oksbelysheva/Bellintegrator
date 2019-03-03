@@ -1,0 +1,32 @@
+.chooseMenu div{
+	display: inline-block;
+}
+
+.blockButton div{
+	display: block;
+	position: relative;
+	bottom: 10px;
+}
+
+.blockList{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.blockList div{
+	display: block;
+}
+
+button{
+	width: 35px;
+}
+
+.warningMessage{
+	padding-top: 10px;
+	visibility: hidden;
+}
+
+select{
+	width: 75px;
+	height: 100px;
+}
