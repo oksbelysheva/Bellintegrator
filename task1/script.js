@@ -16,7 +16,7 @@ btn.addEventListener("click", function(e){
     words.forEach(word => {
       let illegalLetters = {};
       for (const letter of word) {
-        if (typeof  illegalLetters[letter] === "undefined" && !separator.includes(letter)) {
+        if (typeof  illegalLetters[letter] === "undefined") {
           illegalLetters[letter] = 1;
           }else{
             illegalLetters[letter]++;
@@ -30,7 +30,7 @@ btn.addEventListener("click", function(e){
       }
     });
     for (const letter in deleteLetter) {
-      if (deleteLetter.hasOwnProperty(letter)) {
+      if (deleteLetter.hasOwnProperty(letter) && !separator.includes(letter)) {
         while (str.indexOf(letter) !== -1)
           str = str.replace(letter,'');        
       }
