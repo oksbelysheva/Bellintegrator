@@ -1,4 +1,4 @@
-var form = document.querySelector("#charRemoverForm"),
+let form = document.querySelector("#charRemoverForm"),
     btn = document.querySelector("#btnResult");
     
 btn.addEventListener("click", function(e){
@@ -10,13 +10,13 @@ btn.addEventListener("click", function(e){
 /*input: строка, состоящая из нескольких слов. Слова разделены пробельными символами (пробел, табуляция) и знаками препинания (?!:;,.). 
   output: строка, в которой будут удалены все символы, повторяющиеся хоть в одном из слов более одного раза. Игнорировать регистр: СЛОВО = слово*/
   function charRemover(str){
-    let separator = ["?", "!", ":", ";", ",", ".", " ", "\t"];
-    let words = str.split(' ').filter(Boolean);
-    let deleteLetter = {};
+    let separator = ["?", "!", ":", ";", ",", ".", " ", "\t"],
+        words = str.split(' ').filter(Boolean),
+        deleteLetter = {};
     words.forEach(word => {
       let illegalLetters = {};
       for (const letter of word) {
-        if (typeof  illegalLetters[letter] === "undefined") {
+        if (typeof  illegalLetters[letter] === "undefined" && !separator.includes(letter)) {
           illegalLetters[letter] = 1;
           }else{
             illegalLetters[letter]++;
