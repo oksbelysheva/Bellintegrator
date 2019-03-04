@@ -1,9 +1,10 @@
-var time = 5,
+let time = 5,
     timerId,
     btnPause,
     btnNext,
     nextPage,
-    prevPage;
+    prevPage,
+    state = true;
 
 function timer() {
     document.getElementById("time").innerHTML = time;
@@ -16,7 +17,7 @@ function timer() {
             if (confirm("Начать отсчет заново?"))
                 window.open("index.html", '_self');
             else{
-                window.open("index.html", '_self');
+                window.open("index4.html", '_self');
             }
         }
     }
@@ -54,9 +55,10 @@ window.addEventListener('DOMContentLoaded', function() {
     btnPrev.onclick = function(){
         window.open(prevPage, '_self');
     }
-
     timer();
-    startTimer();
+    if (state){
+        startTimer();
+    }
 });
 
 
