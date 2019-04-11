@@ -3,9 +3,9 @@ import {Link} from 'react-router-dom';
 import AppHeader from './app-header';
 import CartList from './cart-list';
 import {connect} from 'react-redux';
-import {refreshCart} from '../actions';
+import {refreshCart, addToCart, delAllItemToCart} from '../actions';
 
-const CartPage = ({cartData, refreshCart}) => {
+const CartPage = ({productData, cartData, refreshCart, onOneDel, onAllDel}) => {
     debugger;
     const total = cartData.reduce(function(sum, current) {
         return sum + current.cost;
@@ -14,7 +14,7 @@ const CartPage = ({cartData, refreshCart}) => {
     return(
         <div className="App">
             <AppHeader appHeader='Shopping cart'/>
-            <CartList />
+            <CartList productData = {productData} cartData = {cartData} onAllDel={onAllDel} onOneDel={onOneDel}/>
             <div><span>Total:  {total}$</span></div>
             <div>
                 <button type="button" className="btn btn-link" style={{float:"left"}}><Link to='/'>Product List</Link></button>
@@ -26,13 +26,16 @@ const CartPage = ({cartData, refreshCart}) => {
 
 const mapStateToProps = (state) => {
     return {
+      productData: state.productData,
       cartData: state.cartData
     }
   }
 
 const mapDispatchToProps = (dispatch) => {
     return{
-        refreshCart: () => dispatch(refreshCart())
+        refreshCart: () => dispatch(refreshCart()),
+        onOneDel: (id) => dispatch(addToCart(id, -1)),
+        onAllDel: (id) => dispatch(delAllItemToCart(id)),
     }
 }
 

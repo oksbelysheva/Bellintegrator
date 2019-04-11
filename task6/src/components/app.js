@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
 import ProductPage from './product-page';
 import CartPage from './cart-page';
 
@@ -7,91 +6,90 @@ export default class App extends Component{
 
     state = {
       productData: [
-        {label: "Product 1", price: 100, count: 0, cost: 0, id: 1},
-        {label: "Product 2", price: 120, count: 0, cost: 0, id: 2},
-        {label: "Product 3", price: 30, count: 0, cost: 0, id: 3}
+        {label: "Product 1", price: 100, id: 1},
+        {label: "Product 2", price: 120, id: 2},
+        {label: "Product 3", price: 30, id: 3}
       ],
       cartData: [],
+      productOrCart: true,
     };
 
-    addItem = (id) =>{
+    addItem = (id, operation) =>{
       this.setState(({productData, cartData})=>{
         const idxProduct = productData.findIndex((el) => el.id === id);
         let productDataItem = productData[idxProduct];
-        productDataItem.count++;
-        productDataItem.cost += productDataItem.price;
         
         const idxCart = cartData.findIndex((el) => el.id === id);
-        const newCartData = (idxCart !== -1) ? [...cartData.slice(0,idxCart), productData[idxProduct], ...cartData.slice(idxCart+1)] :
-                                               [...cartData, productData[idxProduct]];
-        newCartData.sort(function(a,b){
-          return (a.label > b.label) ? 1 : -1;
-        });
+        let newCartData;
+
+        if ( operation === 1 ){
+          newCartData = (idxCart !== -1) ? [...cartData.slice(0,idxCart), {id, count: cartData[idxCart].count+1, cost: cartData[idxCart].cost+productDataItem.price}, ...cartData.slice(idxCart+1)] :
+                                               [...cartData, {id, count: 1, cost: productDataItem.price}];
+         
+          newCartData.sort(function(a,b){
+            return (a.id > b.id) ? 1 : -1;
+          });
+        } else{
+          newCartData = (cartData[idxCart].count === 1) ? [...cartData.slice(0,idxCart), ...cartData.slice(idxCart+1)] :
+                                                            [...cartData.slice(0,idxCart), {id, count: cartData[idxCart].count-1, cost: cartData[idxCart].cost-productDataItem.price}, ...cartData.slice(idxCart+1)];
+        }    
+        
         return{
-          productData: [...productData.slice(0,idxProduct), productDataItem, ...productData.slice(idxProduct+1)],
           cartData: newCartData
         }
       });
     }; 
 
     delAllItem = (id) =>{
-      this.setState(({productData, cartData})=>{
-        const idxProduct = productData.findIndex((el) => el.id === id);
-        let productDataItem = productData[idxProduct];
-        productDataItem.count = 0;
-        productDataItem.cost = 0;
-
+      this.setState(({cartData})=>{
         const idx = cartData.findIndex((el) => el.id === id);
         return{
-          productData: [...productData.slice(0,idxProduct), productDataItem, ...productData.slice(idxProduct+1)],
           cartData: [...cartData.slice(0,idx), ...cartData.slice(idx+1)]
         }
       });
     };
 
-    
-    delOneItem = (id) =>{
-      this.setState(({productData, cartData})=>{
-        const idxProduct = productData.findIndex((el) => el.id === id);
-        let productDataItem = productData[idxProduct];
-        productDataItem.count--;
-        productDataItem.cost -= productDataItem.price;
-        
-        const idx = cartData.findIndex((el) => el.id === id);
-        const newCartData = (productDataItem.count === 0) ? [...cartData.slice(0,idx), ...cartData.slice(idx+1)] :
-                                                            [...cartData.slice(0,idx), productDataItem, ...cartData.slice(idx+1)];
+    refreshCart = () =>{
+      this.setState(({cartData})=>{
         return{
-          productData: [...productData.slice(0,idxProduct), productDataItem, ...productData.slice(idxProduct+1)],
-          cartData: newCartData
+          cartData:[]
         }
       });
-    };
+    }
 
-    refreshCart = () =>{
-      this.setState(({productData, cartData})=>{
-        productData.forEach(element => {
-          if (element.count>0){
-            this.delAllItem(element.id);
-          }
-        });
-      });
+    nextPage = () =>{
+      this.setState(({productOrCart})=>{
+        const newState  = !productOrCart;
+        return{
+          productOrCart: newState
+        }
+      })
     }
 
 
     render(){
+      if (this.state.productOrCart)
       return (
         <div>
-         <Router>
-          <Route path="/" exact={true} render={() => <ProductPage 
+          <ProductPage 
             productData={this.state.productData}
-            addItem = {this.addItem}/>}/>
-          <Route path="/cart" render={() => <CartPage 
             cartData={this.state.cartData}
-            delOneItem = {this.delOneItem}
-            delAllItem = {this.delAllItem}
-            refreshCart = {this.refreshCart}/>}/>
-         </Router>
+            addItem = {this.addItem}
+            nextPage = {this.nextPage}/>
         </div>
       );
+      else{
+        return (
+          <div>
+            <CartPage 
+              productData = {this.state.productData}
+              cartData={this.state.cartData}
+              addItem = {this.addItem}
+              delAllItem = {this.delAllItem}
+              refreshCart = {this.refreshCart}
+              nextPage = {this.nextPage}/>
+          </div>
+        );
+      }
     }
 }

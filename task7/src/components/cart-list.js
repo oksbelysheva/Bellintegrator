@@ -1,12 +1,11 @@
 import React from 'react';
 import CartItem from './cart-list-item';
 import './cart-list.css';
-import {connect} from 'react-redux';
-import {delOneItemToCart, delAllItemToCart} from '../actions';
 
-const CartList = ({cartData, onOneDel, onAllDel}) =>{
+const CartList = ({productData, cartData, onOneDel, onAllDel}) =>{
     const elements = cartData.map((item) => {
-      return (<CartItem {...item} onOneDel={() => onOneDel(item.id)} onAllDel={() => onAllDel(item.id)}/>)
+      const idxProduct = productData.findIndex((el) => el.id === item.id);
+      return (<CartItem {...productData[idxProduct]} {...item} onOneDel={() => onOneDel(item.id, -1)} onAllDel={() => onAllDel(item.id)}/>)
     });
 
     return(
@@ -27,17 +26,4 @@ const CartList = ({cartData, onOneDel, onAllDel}) =>{
     );
   };
 
-  const mapStateToProps = (state) => {
-    return {
-      cartData: state.cartData
-    }
-  }
-
-  const mapDispatchToProps = (dispatch) => {
-    return{
-        onOneDel: (id) => dispatch(delOneItemToCart(id)),
-        onAllDel: (id) => dispatch(delAllItemToCart(id)),
-    }
-  }
-
-  export default connect(mapStateToProps, mapDispatchToProps)(CartList);
+  export default CartList;

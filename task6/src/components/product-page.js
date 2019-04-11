@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import AppHeader from './app-header';
 import ProductList from './product-list';
 
@@ -9,9 +8,12 @@ export default class ProductPage extends Component{
         <div className="App">
             <AppHeader appHeader='Product List'/>
             <ProductList 
-             productData={this.props.productData}
+              cartData = {this.props.cartData}
+              productData={this.props.productData}
               onAdd = {this.props.addItem} />
-            <Link to='/cart'>Cart</Link>
+            <button type="button" className="btn btn-large btn-info" onClick={this.props.nextPage}>
+                <span>Cart</span>
+            </button>
          </div>
         )
     }

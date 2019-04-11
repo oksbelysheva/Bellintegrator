@@ -1,15 +1,13 @@
-export const addToCart = (id) => {
-    return {type: 'addToCart', id};
+import {actionTypes} from './action-type';
+
+export const addToCart = (id, operation) => {
+    return {type: actionTypes.ADD_TO_CART, id, operation};
   }
 
 export const delAllItemToCart = (id) => {
-    return {type: 'delAllItemToCart', id};
-  }
-
-export const delOneItemToCart = (id) => {
-    return {type: 'delOneItemToCart', id};
+    return {type: actionTypes.DELETE_ALL_ITEM_IN_CART, id};
   }
 
 export const refreshCart = () => {
-    return {type: 'refreshCart'};
+    return {type: actionTypes.REFRESH_CART};
   }

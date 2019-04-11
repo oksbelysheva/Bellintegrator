@@ -3,7 +3,8 @@ import './product-list-item.css';
 
 export default class ProductItem extends Component{
   render(){
-    const {id, label, price, count, onAdd} = this.props;
+    let {id, label, price, count, onAdd} = this.props;
+    count = count ? count : 0;
     return(
       <tr key={id}>
         <td>{label}</td>

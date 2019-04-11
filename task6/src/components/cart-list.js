@@ -2,9 +2,10 @@ import React from 'react';
 import CartItem from './cart-list-item';
 import './cart-list.css';
 
-const CartList = ({cartData, onOneDel, onAllDel}) =>{
+const CartList = ({productData, cartData, onOneDel, onAllDel}) =>{
     const elements = cartData.map((item) => {
-      return (<CartItem {...item} onOneDel={() => onOneDel(item.id)} onAllDel={() => onAllDel(item.id)}/>)
+      const idxProduct = productData.findIndex((el) => el.id === item.id);
+      return (<CartItem {...productData[idxProduct]} {...item} onOneDel={() => onOneDel(item.id, -1)} onAllDel={() => onAllDel(item.id)}/>)
     });
 
     return(

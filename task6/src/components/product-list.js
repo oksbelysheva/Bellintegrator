@@ -2,9 +2,11 @@ import React from 'react';
 import ProductItem from './product-list-item';
 import './product-list.css';
 
-const ProductList = ({productData, onAdd}) =>{
+const ProductList = ({cartData, productData, onAdd}) =>{
     const elements = productData.map((item) => {
-      return (<ProductItem {...item} onAdd={() => onAdd(item.id)}/>)
+      const cartIdx = cartData.findIndex((el)=>el.id === item.id);
+      const propsCart = cartIdx === -1 ? null : cartData[cartIdx];
+      return (<ProductItem {...propsCart} {...item} onAdd={() => onAdd(item.id, 1)}/>)
     });
 
     return(

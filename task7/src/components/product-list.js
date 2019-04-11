@@ -1,12 +1,12 @@
 import React from 'react';
 import ProductItem from './product-list-item';
 import './product-list.css';
-import {connect} from 'react-redux';
-import {addToCart} from '../actions';
 
-const ProductList = ({ productData, addToCart }) =>{
+const ProductList = ({cartData, productData, addToCart}) =>{
     const elements = productData.map((item) => {
-      return (<ProductItem {...item} addToCart = {() => addToCart(item.id)}/>)
+      const cartIdx = cartData.findIndex((el)=>el.id === item.id);
+      const propsCart = cartIdx === -1 ? null : cartData[cartIdx];
+      return (<ProductItem {...propsCart} {...item} addToCart={() => addToCart(item.id, 1)}/>)
     });
 
     return(
@@ -26,16 +26,4 @@ const ProductList = ({ productData, addToCart }) =>{
     );
   };
 
-  const mapStateToProps = (state) => {
-    return {
-      productData: state.productData
-    }
-  }
-
-  const mapDispatchToProps = (dispatch) => {
-    return{
-      addToCart: (id) => dispatch(addToCart(id))
-    }
-  }
-
-  export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+  export default ProductList;
