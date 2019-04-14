@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './product-list-item.css';
 
 export default class ProductItem extends Component{
   render(){

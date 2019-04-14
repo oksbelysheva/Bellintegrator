@@ -1,95 +1,89 @@
-import React, {Component} from 'react';
-import ProductPage from './product-page';
-import CartPage from './cart-page';
+import React, { Component } from 'react';
+import ProductPage from './productPage';
+import CartPage from './cartPage';
 
-export default class App extends Component{
+export default class App extends Component {
 
-    state = {
-      productData: [
-        {label: "Product 1", price: 100, id: 1},
-        {label: "Product 2", price: 120, id: 2},
-        {label: "Product 3", price: 30, id: 3}
-      ],
-      cartData: [],
-      productOrCart: true,
-    };
+  state = {
+    productData: [
+      { label: "Product 1", price: 100, id: 1 },
+      { label: "Product 2", price: 120, id: 2 },
+      { label: "Product 3", price: 30, id: 3 }
+    ],
+    cartData: [],
+    showCart: true,
+  };
 
-    addItem = (id, operation) =>{
-      this.setState(({productData, cartData})=>{
-        const idxProduct = productData.findIndex((el) => el.id === id);
-        let productDataItem = productData[idxProduct];
-        
-        const idxCart = cartData.findIndex((el) => el.id === id);
-        let newCartData;
+  addItem = (id, operation) => {
+    this.setState(({ productData, cartData }) => {
+      const idxProduct = productData.findIndex((el) => el.id === id);
+      let productDataItem = productData[idxProduct];
 
-        if ( operation === 1 ){
-          newCartData = (idxCart !== -1) ? [...cartData.slice(0,idxCart), {id, count: cartData[idxCart].count+1, cost: cartData[idxCart].cost+productDataItem.price}, ...cartData.slice(idxCart+1)] :
-                                               [...cartData, {id, count: 1, cost: productDataItem.price}];
-         
-          newCartData.sort(function(a,b){
-            return (a.id > b.id) ? 1 : -1;
-          });
-        } else{
-          newCartData = (cartData[idxCart].count === 1) ? [...cartData.slice(0,idxCart), ...cartData.slice(idxCart+1)] :
-                                                            [...cartData.slice(0,idxCart), {id, count: cartData[idxCart].count-1, cost: cartData[idxCart].cost-productDataItem.price}, ...cartData.slice(idxCart+1)];
-        }    
-        
-        return{
-          cartData: newCartData
-        }
-      });
-    }; 
+      const idxCart = cartData.findIndex((el) => el.id === id);
+      let newCartData;
 
-    delAllItem = (id) =>{
-      this.setState(({cartData})=>{
-        const idx = cartData.findIndex((el) => el.id === id);
-        return{
-          cartData: [...cartData.slice(0,idx), ...cartData.slice(idx+1)]
-        }
-      });
-    };
+      if ( operation === 1 ) {
+        newCartData = (idxCart !== -1) ? 
+          [...cartData.slice(0, idxCart), { id, count: cartData[idxCart].count + 1, cost: cartData[idxCart].cost + productDataItem.price }, ...cartData.slice(idxCart + 1)] :
+          [...cartData, { id, count: 1, cost: productDataItem.price }];
 
-    refreshCart = () =>{
-      this.setState(({cartData})=>{
-        return{
-          cartData:[]
-        }
-      });
-    }
+        newCartData.sort(function (a, b) {
+          return (a.id > b.id) ? 1 : -1;
+        });
+      } else {
+        newCartData = (cartData[idxCart].count === 1) ? 
+          [...cartData.slice(0, idxCart), ...cartData.slice(idxCart + 1)] :
+          [...cartData.slice(0, idxCart), { id, count: cartData[idxCart].count - 1, cost: cartData[idxCart].cost - productDataItem.price }, ...cartData.slice(idxCart + 1)];
+      }
 
-    nextPage = () =>{
-      this.setState(({productOrCart})=>{
-        const newState  = !productOrCart;
-        return{
-          productOrCart: newState
-        }
-      })
-    }
+      return {
+        cartData: newCartData
+      }
+    });
+  };
+
+  delAllItem = (id) => {
+    this.setState(({ cartData }) => {
+      const idx = cartData.findIndex((el) => el.id === id);
+      return {
+        cartData: [...cartData.slice(0, idx), ...cartData.slice(idx + 1)]
+      }
+    });
+  };
+
+  refreshCart = () => {
+    this.setState(({ cartData }) => {
+      return {
+        cartData: []
+      }
+    });
+  }
+
+  handlerShowCart = () => {
+    this.setState({ showCart: !this.state.showCart })
+  }
 
 
-    render(){
-      if (this.state.productOrCart)
-      return (
+  render() {
+    return (
+      this.state.showCart ?
         <div>
-          <ProductPage 
+          <CartPage
             productData={this.state.productData}
             cartData={this.state.cartData}
-            addItem = {this.addItem}
-            nextPage = {this.nextPage}/>
+            addItem={this.addItem}
+            delAllItem={this.delAllItem}
+            refreshCart={this.refreshCart}
+            handlerShowCart={this.handlerShowCart} />
+        </div> :
+        <div>
+          <ProductPage
+            productData={this.state.productData}
+            cartData={this.state.cartData}
+            addItem={this.addItem}
+            handlerShowCart={this.handlerShowCart} />
         </div>
-      );
-      else{
-        return (
-          <div>
-            <CartPage 
-              productData = {this.state.productData}
-              cartData={this.state.cartData}
-              addItem = {this.addItem}
-              delAllItem = {this.delAllItem}
-              refreshCart = {this.refreshCart}
-              nextPage = {this.nextPage}/>
-          </div>
-        );
-      }
-    }
+    )
+  }
 }
+
