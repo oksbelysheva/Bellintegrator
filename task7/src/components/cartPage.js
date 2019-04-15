@@ -23,13 +23,12 @@ const CartPage = ({productData, cartData, refreshCart, addToCart, delAllItemToCa
         return cartData.map((item) => {
             const idxProduct = productData.findIndex((el) => el.id === item.id);
             return (<CartItem {...productData[idxProduct]} {...item} onOneDel={() => addToCart(item.id, -1)} onAllDel={() => delAllItemToCart(item.id)}/>)
-          });
+        });
     };
 
     return(
         <div className="App">
             <AppHeader appHeader='Shopping cart'/>
-            {/* <CartList productData = {productData} cartData = {cartData} onAllDel={onAllDel} onOneDel={onOneDel}/> */}
             <Table headerName = {headerName} renderTableBody={renderTableBody}/>
             <div><span>Total:  {total}$</span></div>
             <div>

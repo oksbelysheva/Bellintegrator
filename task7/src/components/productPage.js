@@ -17,10 +17,10 @@ const ProductPage = ({ cartData, productData, addToCart }) => {
 
   const renderTableBody = () => {
     return productData.map((item) => {
-        const cartIdx = cartData.findIndex((el)=>el.id === item.id);
-        const propsCart = cartIdx === -1 ? null : cartData[cartIdx];
-        return (<ProductItem {...propsCart} {...item} addToCart={() => addToCart(item.id, 1)}/>)
-      });
+      const cartIdx = cartData.findIndex((el)=>el.id === item.id);
+      const propsCart = cartIdx === -1 ? null : cartData[cartIdx];
+      return (<ProductItem {...propsCart} {...item} addToCart={() => addToCart(item.id, 1)}/>)
+    });
   }
 
   return (

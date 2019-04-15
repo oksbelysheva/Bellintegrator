@@ -8,11 +8,11 @@ export default class App extends Component{
       return (
         <div className='container'>
          <Router>
-          <Route path="/" exact={true} render={
-            () => <ProductPage/>
+          <Route path="/" exact={true} 
+           render={() => <ProductPage/>
           }/>
-          <Route path="/cart" render={
-            () => <CartPage/>
+          <Route path="/cart" 
+           render={() => <CartPage/>
           }/>
          </Router>
         </div>

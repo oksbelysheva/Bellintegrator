@@ -9,53 +9,54 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
 
-    switch (action.type){
-      case 'ADD_TO_CART':{
-        const {productData, cartData} = state;
-        const idxProduct = productData.findIndex((el) => el.id === action.id);
-        let productDataItem = productData[idxProduct];
+  switch (action.type){
+    case 'ADD_TO_CART':{
+      const {productData, cartData} = state;
+      const idxProduct = productData.findIndex((el) => el.id === action.id);
+      let productDataItem = productData[idxProduct];
         
-        const idxCart = cartData.findIndex((el) => el.id === action.id);
-        let newCartData;
+      const idxCart = cartData.findIndex((el) => el.id === action.id);
+      let newCartData;
 
-        if ( action.operation === 1 ){
-          newCartData = (idxCart !== -1) ? [...cartData.slice(0,idxCart), {id: action.id, count: cartData[idxCart].count+1, cost: cartData[idxCart].cost+productDataItem.price}, ...cartData.slice(idxCart+1)] :
-                                               [...cartData, {id: action.id, count: 1, cost: productDataItem.price}];
+      if ( action.operation === 1 ){
+        newCartData = (idxCart !== -1) ? [...cartData.slice(0,idxCart), {id: action.id, count: cartData[idxCart].count+1, cost: cartData[idxCart].cost+productDataItem.price}, ...cartData.slice(idxCart+1)] :
+                                         [...cartData, {id: action.id, count: 1, cost: productDataItem.price}];
          
-          newCartData.sort(function(a,b){
-            return (a.id > b.id) ? 1 : -1;
-          });
-        } else{
-          newCartData = (cartData[idxCart].count === 1) ? [...cartData.slice(0,idxCart), ...cartData.slice(idxCart+1)] :
-                                                            [...cartData.slice(0,idxCart), {id: action.id, count: cartData[idxCart].count-1, cost: cartData[idxCart].cost-productDataItem.price}, ...cartData.slice(idxCart+1)];
-        }    
+        newCartData.sort(function(a,b){
+          return (a.id > b.id) ? 1 : -1;
+        });
+
+      } else{
+        newCartData = (cartData[idxCart].count === 1) ? [...cartData.slice(0,idxCart), ...cartData.slice(idxCart+1)] :
+                                                        [...cartData.slice(0,idxCart), {id: action.id, count: cartData[idxCart].count-1, cost: cartData[idxCart].cost-productDataItem.price}, ...cartData.slice(idxCart+1)];
+      }    
         
-        return{
-          productData: productData,
-          cartData: newCartData
-        }
+      return{
+        productData: productData,
+        cartData: newCartData
       }
-
-      case 'DELETE_ALL_ITEM_IN_CART':{
-        const {productData, cartData} = state;
-          const idx = cartData.findIndex((el) => el.id === action.id);
-          return{
-            productData: productData,
-            cartData: [...cartData.slice(0,idx), ...cartData.slice(idx+1)]
-          }
-      }
-
-      case 'REFRESH_CART':{
-        const {productData} = state;
-        return{
-          productData: productData,
-          cartData:[]
-        }
-      }
-
-      default:
-        return state;
     }
-  }
 
-  export default reducer;
+    case 'DELETE_ALL_ITEM_IN_CART':{
+      const {productData, cartData} = state;
+      const idx = cartData.findIndex((el) => el.id === action.id);
+      return{
+        productData: productData,
+        cartData: [...cartData.slice(0,idx), ...cartData.slice(idx+1)]
+      }
+    }
+
+    case 'REFRESH_CART':{
+      const {productData} = state;
+      return{
+        productData: productData,
+        cartData:[]
+      }
+    }
+
+    default:
+      return state;
+  }
+}
+
+export default reducer;
