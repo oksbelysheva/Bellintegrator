@@ -1,5 +1,4 @@
 import React from 'react';
-import './cart-list-item.css';
 
 const CartItem = ({id, label, count, cost, onOneDel, onAllDel}) => {
     return(

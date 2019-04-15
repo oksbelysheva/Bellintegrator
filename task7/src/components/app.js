@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import ProductPage from './product-page';
-import CartPage from './cart-page';
+import ProductPage from './productPage';
+import CartPage from './cartPage';
 
 export default class App extends Component{
     render(){
