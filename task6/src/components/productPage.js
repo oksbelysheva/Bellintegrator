@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import AppHeader from './appHeader';
-import ProductItem from './productListItem';
+import ProductItem from './productItem';
 import Table from './table';
 
 export default class ProductPage extends Component{

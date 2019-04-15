@@ -1,22 +1,22 @@
 import React from 'react';
 
 const Table = ({headerName, renderTableBody}) =>{
-    const header = headerName.map((item) => {
-        return (<th scope="col">{item}</th>)
-    });
+  const header = headerName.map((item) => {
+      return (<th scope="col">{item}</th>)
+  });
 
-    return(
-      <table className="table">
-        <thead>
+  return(
+    <table className="table">
+      <thead>
         <tr>
           {header}
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
         {renderTableBody()}
-        </tbody>
-      </table>
-    );
-  };
+      </tbody>
+    </table>
+  );
+};
 
-  export default Table;
+export default Table;
